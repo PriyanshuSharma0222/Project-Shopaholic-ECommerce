@@ -16,11 +16,11 @@ app.use(express.static('public'));
 // app.use(morgan('dev'));
 
 try{
-app.listen(PORT, ()=>{
-    console.log(`<<< [server.js] >>> APP LISTENING ON PORT : ${PORT} >>>`);
+connectDB().then(()=>{
+    app.listen(PORT, ()=>{
+        console.log(`<<< [server.js] >>> APP LISTENING ON PORT : ${PORT} >>>`);
+    });
 });
-
-connectDB();
 
 app.use('/user', userRouter);
 app.use('/admin', adminRouter);
