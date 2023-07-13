@@ -15,8 +15,9 @@ app.use(express.json());
 app.use(express.static('public'));
 // app.use(morgan('dev'));
 
+try{
 app.listen(PORT, ()=>{
-    // console.log(`<<< [server.js] >>> APP LISTENING ON PORT : ${PORT} >>>`);
+    console.log(`<<< [server.js] >>> APP LISTENING ON PORT : ${PORT} >>>`);
 });
 
 connectDB();
@@ -28,6 +29,9 @@ app.use('/api', apiRouter);
 app.get('/', (req,res)=>{
     res.redirect('/user');
 });
+}catch(error){
+  concole.error(error);  
+};
 
 
 
