@@ -1,5 +1,5 @@
 import express from 'express';
-import morgan from 'morgan';
+// import morgan from 'morgan';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import userRouter from './userRoutes.js';
@@ -13,10 +13,10 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.static('public'));
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 
 app.listen(PORT, ()=>{
-    console.log(`<<< (server.js) >>> APP LISTENING ON PORT : ${PORT} >>>`);
+    console.log(`<<< [server.js] >>> APP LISTENING ON PORT : ${PORT} >>>`);
 });
 
 connectDB();
