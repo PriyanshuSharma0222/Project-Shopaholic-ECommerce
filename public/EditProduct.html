@@ -15,6 +15,7 @@
             <a href="home" style="display: none;"><li>HOME</li></a>
             <a href="products"><li>PRODUCTS</li></a>
             <a href="orders"><li>ORDERS</li></a>
+            <a href="users"><li>USERS</li></a>
             <a href="/user"><li>LOGOUT</li></a>
         </ul>
         </div>
@@ -23,7 +24,7 @@
     <div class="container">
         <div class="form-container">
         <h2>Details</h2>
-        <form id="AddProduct">
+        <form id="EditProduct">
             <div class="form-group">
                 <label for="name">Name</label>
                 <input type="text" id="name" name="name" required>
@@ -44,12 +45,12 @@
                 <label for="tags">Tags (',' separated)</label>
                 <input type="text" id="tags" name="tags">
             </div>
-            <button type="submit" class="submit-button">ADD PRODUCT</button>
+            <button type="submit" class="submit-button">UPDATE</button>
         </form>
         </div>
     </div>
 
-<script src="/scripts/utils.js"></script>
-<script src="/scripts/AddProduct.js"></script>
+    <script src="/scripts/utils.js"></script>
+    <script src="/scripts/EditProduct.js"></script>
 </body>
 </html>

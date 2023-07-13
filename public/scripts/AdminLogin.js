@@ -9,7 +9,7 @@ LoginForm.addEventListener('submit', async (e) => {
 	const email = document.getElementById('email').value;
 	const password = document.getElementById('password').value;
 
-	await fetch('/user/login', {
+	await fetch('/admin/admin-login', {
 		method: 'POST',
 		headers: {'Content-Type': 'application/json'},
 		body: JSON.stringify({email,password})
@@ -18,19 +18,24 @@ LoginForm.addEventListener('submit', async (e) => {
 	.then(data => {
 		if(data.success){
 			localStorage.setItem('userID', data.userID);
-			localStorage.setItem('isLoggedIn', true);
-			LoginForm.reset();
-			window.location.href = '/user/home';
+			adminAuthentication()
+			.then((isAdmin)=>{
+				if(isAdmin){
+					LoginForm.reset();
+					window.location.href = '/admin/products';
+				}
+			})
+			
 		}
 		else{
-            console.log(`(LoginPage.js) : ${JSON.stringify(data)}`);
+            console.log(`(AdminLogin.js) : ${JSON.stringify(data)}`);
             if(data.message === 'ERROR'){
-                console.error(`(LoginPage.js) : ${data.error}`);
+                console.error(`(AdminLogin.js) : ${data.error}`);
             }
         }
     })
     .catch(error => {
-        console.error(`(LoginPage.js) : ${error}`);
+        console.error(`(AdminLogin.js) : ${error}`);
     });
 
 });

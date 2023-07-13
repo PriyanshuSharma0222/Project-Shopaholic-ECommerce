@@ -1,25 +1,25 @@
-isLoggedIn();
+adminAuthentication();
 
 const orderContainer = document.getElementById('orders-container');
 
-const updateCartLength = ()=>{
-    getCartLength()
-    .then(length => {
-        cartLength.innerText = length;
+const fillCustomerName = (userID, e) =>{
+    getUserName({userID})
+    .then(name => {
+        e.innerText = name;
     })
     .catch(error => {
-        console.error(`updateCartLength() : ${error}`);
-    });
+        console.error(` fillCustomerName() : ${error}`);
+    })
 }
-updateCartLength();
 
 const populateOrders = () => {
     orderContainer.innerHTML = "";
 
-    getUserOrders()
+    getAllOrders()
     .then(orders => {
         orders.forEach(async (order, i)=>{
             const newOrder = document.createElement('div');
+            newOrder.id = order._id;
             orderContainer.appendChild(newOrder);
 
             newOrder.classList.add('order-card');
@@ -32,26 +32,59 @@ const populateOrders = () => {
                 <span class="total-price-container">${i+1}</span>
             </div>
             <div>
-                <span class="tp-heading">Status : </span>
-                <span class="status">${order.status}</span>
+                <label class="tp-heading"> Status </label>
+                <select class="order-status total-price-container">
+                    <option value="Pending" style="color: orange;">Pending</option>
+                    <option value="Order Placed" style="color: green;">Order Placed</option>
+                    <option value="Processed" style="color: green;">Processed</option>
+                    <option value="Shipped" style="color: green;">Shipped</option>
+                    <option value="Out for delivery" style="color: green;">Out for delivery</option>
+                    <option value="Delivered" style="color: green;">Delivered</option>
+                    <option value="Cancelled" style="color: red;">Cancelled</option>
+                </select>
             </div>
             <div>
                 <span class="tp-heading">Total Price </span>
                 <span class="total-price-container">&#8377; <span class="total-price">${order.totalPrice}</span></span>
             </div>
             `
-            const orderStatus = header.getElementsByClassName('status')[0];
-            if(orderStatus.innerText === "Pending"){
-                orderStatus.style.color = "orange";        
+            const orderStatus = header.getElementsByClassName('order-status')[0];
+            for (let i=0; i<orderStatus.options.length; i++){
+                if(orderStatus.options[i].value === order.status){
+                    orderStatus.options[i].selected = true;
+                }
             }
-            else if(orderStatus.innerText === "Cancelled"){
-                orderStatus.style.color = "red";    
+
+            if(orderStatus.value === "Pending"){
+                orderStatus.style.color = "orange";
             }
+            else if(orderStatus.value === "Cancelled"){
+                orderStatus.style.color = "red";
+            }
+
+            orderStatus.addEventListener('change', ()=>{
+                if(orderStatus.value === "Pending"){
+                    orderStatus.style.color = "orange";
+                }
+                else if(orderStatus.value === "Cancelled"){
+                    orderStatus.style.color = "red";
+                }
+                else{
+                    orderStatus.style.color = "green";
+                }
+                const orderID = orderStatus.parentElement.parentElement.parentElement.id;
+                changeOrderStatus({adminID:localStorage.getItem('userID'), orderID, status:orderStatus.value});
+            });
+            
             newOrder.appendChild(header);
 
             const orderDetails = document.createElement('div');
             orderDetails.classList.add('order-details');
             orderDetails.innerHTML = `
+            <div class="pair">
+                <div class="od-heading">Name </div>
+                <div class="customer-name"></div>
+            </div>
             <div class="pair">
                 <div class="od-heading">Phone </div>
                 <div class="tp-val">${order.phone}</div>
@@ -61,6 +94,7 @@ const populateOrders = () => {
                 <div class="tp-val">${order.address}</div>
             </div>
             `
+            fillCustomerName(order.userID, orderDetails.getElementsByClassName('customer-name')[0]);
             newOrder.appendChild(orderDetails);
 
             const products = order.products;
@@ -85,6 +119,7 @@ const populateOrders = () => {
                         <div class="value">&#8377; ${product.price * e.quantity}</div>
                     </div>
                     `
+
                     newOrder.appendChild(newProduct);
                     newOrder.appendChild(document.createElement('hr'));
                 })

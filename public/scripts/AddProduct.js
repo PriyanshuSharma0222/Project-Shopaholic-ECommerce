@@ -1,33 +1,35 @@
-console.log('addProduct.js running');
-const RegisterForm = document.getElementById('AddProduct');
+adminAuthentication();
 
-RegisterForm.addEventListener('submit', async (e) => {
+const AddProductForm = document.getElementById('AddProduct');
+
+AddProductForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const name = document.getElementById('name').value;
     const description = document.getElementById('description').value;
     const imageURL = document.getElementById('imageURL').value;
     const price = document.getElementById('price').value;
-    const tags = ["men","watch"];
-    console.log(name,description,price);
+    const tags = document.getElementById('tags').value.split(',').map((tag) => { return tag.trim(); });
 
-    try {
-        const response = await fetch('/admin/add-product', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({name,description,imageURL,price,tags})
-        });
-        if (response.status == 200) {
-            console.log('Successful');
-        } else {
-            console.error('Failed');
+    await fetch('/admin/add-product', {
+		method: 'POST',
+		headers: {'Content-Type': 'application/json'},
+		body: JSON.stringify({adminID:localStorage.getItem('userID'),name,description,imageURL,price,tags})
+    })
+    .then(response => response.json())
+    .then(data => {
+		if(data.success){
+            AddProductForm.reset();
+			window.location.href = 'products';
+		}
+		else{
+            console.log(`(AddProduct.js) : ${JSON.stringify(data)}`);
+            if(data.message === 'ERROR'){
+                console.error(`(AddProduct.js) : ${data.error}`);
+            }
         }
-    } 
-    catch (error) {
-        console.error('An error occurred:', error.message);
-    }
-
-    RegisterForm.reset();
+    })
+    .catch(error => {
+        console.error(`(AddProduct.js) : ${error}`);
+    });
 });

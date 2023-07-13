@@ -17,7 +17,7 @@ body{
 	padding: 20px;
 	border-radius: 5px;
 	box-shadow: 0 2px 5px grey;
- 	background-color: white;
+  background-color: white;
 }
 
 .form-container h2 {
@@ -26,7 +26,7 @@ body{
 	font-size: 30px;
 }
 
-#loginForm{
+#AddProduct{
 	display: flex;
 	flex-direction: column;
 }

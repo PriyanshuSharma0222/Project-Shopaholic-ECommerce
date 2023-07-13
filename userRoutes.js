@@ -44,18 +44,18 @@ userRouter.post('/register', async (req,res)=>{
         const {name,email,password,phone,address} = req.body;
         const hashedPassword = await encryptPassword(password);
         const newCart = new Cart;
-        await newCart.save();
         const newUser = new User({name,email,password:hashedPassword,phone,address, cartID:newCart._id});
-        await newUser.save();
         newCart.userID = newUser._id;
-        
+        await newCart.save();
+        await newUser.save();
+
         return res.status(200).send({
             success: true,
             message: 'Registeration : SUCCESSFUL',
         });
 
     } catch (error) {
-        console.error(`<<< (/user/POST/register) >>> ${error} >>>`);
+        console.error(`<<< [/user/POST/register] >>> ${error} >>>`);
         return res.status(500).json({
             success: false,
             message: 'ERROR',
@@ -66,11 +66,11 @@ userRouter.post('/register', async (req,res)=>{
 
 userRouter.post('/login', async (req,res)=>{
     try {
-        const {name,password} = req.body;
-        const user = await User.findOne({ name });
+        const {email,password} = req.body;
+        const user = await User.findOne({ email });
     
         if (!user) {
-            console.log('<<< (/user/POST/login) >>> User Not Found >>>');
+            console.log('<<< [/user/POST/login] >>> User Not Found >>>');
             return res.status(404).json({
                 success: false,
                 message: 'User Not Found'
@@ -79,7 +79,7 @@ userRouter.post('/login', async (req,res)=>{
         else {
             const match =  await comparePassword(password, user.password);
             if(!match){
-                console.log('<<< (/user/POST/login) >>> Invalid Password >>>');
+                console.log('<<< [/user/POST/login] >>> Invalid Password >>>');
                 return res.status(200).json({
                     success: false,
                     message: 'Invalid Password'
@@ -95,7 +95,7 @@ userRouter.post('/login', async (req,res)=>{
         }
 
     } catch (error) {
-        console.error(`<<< (/user/POST/login) >>> ${error} >>>`);
+        console.error(`<<< [/user/POST/login] >>> ${error} >>>`);
         return res.status(500).json({
             success: false,
             message: 'ERROR',

@@ -21,7 +21,7 @@ RegisterForm.addEventListener('submit', async (e) => {
 			window.location.href = '/user/login';
 		}
 		else{
-            console.log(`(RegisterPage.js) : ${data}`);
+            console.log(`(RegisterPage.js) : ${JSON.stringify(data)}`);
             if(data.message === 'ERROR'){
                 console.error(`(RegisterPage.js) : ${data.error}`);
             }

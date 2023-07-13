@@ -56,3 +56,11 @@ nav ul li:hover{
     border-bottom: 1px solid black;
     transition: 0.1s ease;
 }
+
+
+.footer{
+    background-color: black;
+    text-align: center;
+    color: white;
+    padding: 10px;
+}

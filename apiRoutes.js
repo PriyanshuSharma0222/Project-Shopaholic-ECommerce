@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import Product from './models/ProductModel.js';
 import Cart from './models/CartModel.js';
 import Order from './models/OrderModel.js';
+import User from './models/UserModel.js';
 
 const apiRouter = express.Router();
 apiRouter.use(express.static('public'));
@@ -12,7 +13,7 @@ apiRouter.post('/get-all-products', async (req,res)=>{
         const products = await Product.find({});
     
         if (!products) {
-            console.log('<<< (/api/get-all-products) >>> Products Not Found >>>');
+            console.log('<<< [/api/get-all-products] >>> Products Not Found >>>');
             return res.status(404).json({
                 success: false,
                 messgage: 'Products Not Found'
@@ -26,7 +27,7 @@ apiRouter.post('/get-all-products', async (req,res)=>{
         }
 
     } catch (error) {
-        console.error(`<<< (/api/get-all-products) >>> ${error} >>>`);
+        console.error(`<<< [/api/get-all-products] >>> ${error} >>>`);
         return res.status(500).json({
             success: false,
             message: 'ERROR',
@@ -41,7 +42,7 @@ apiRouter.post('/get-product', async (req,res)=>{
         const product = await Product.findById(productID);
     
         if (!product) {
-            console.log('<<< (/api/get-product) >>> Product Not Found >>>');
+            console.log('<<< [/api/get-product] >>> Product Not Found >>>');
             return res.status(404).json({
                 success: false,
                 messgage: 'Product Not Found'
@@ -55,7 +56,7 @@ apiRouter.post('/get-product', async (req,res)=>{
         }
 
     } catch (error) {
-        console.error(`<<< (/api/get-product) >>> ${error} >>>`);
+        console.error(`<<< [/api/get-product] >>> ${error} >>>`);
         return res.status(500).json({
             success: false,
             message: 'ERROR',
@@ -70,7 +71,7 @@ apiRouter.post('/get-product-price', async (req,res)=>{
         const product = await Product.findById(productID);
     
         if (!product) {
-            console.log('<<< (/api/get-product) >>> Product Not Found >>>');
+            console.log('<<< [/api/get-product] >>> Product Not Found >>>');
             return res.status(404).json({
                 success: false,
                 messgage: 'Product Not Found'
@@ -84,7 +85,7 @@ apiRouter.post('/get-product-price', async (req,res)=>{
         }
 
     } catch (error) {
-        console.error(`<<< (/api/get-product) >>> ${error} >>>`);
+        console.error(`<<< [/api/get-product] >>> ${error} >>>`);
         return res.status(500).json({
             success: false,
             message: 'ERROR',
@@ -99,7 +100,7 @@ apiRouter.post('/get-product-quantity', async (req,res)=>{
         const cart = await Cart.findOne({userID});
     
         if (!cart) {
-            console.log('<<< (/api/get-product-quantity) >>> Cart Not Found >>>');
+            console.log('<<< [/api/get-product-quantity] >>> Cart Not Found >>>');
             return res.status(404).json({
                 success: false,
                 message: 'Cart Not Found'
@@ -121,7 +122,7 @@ apiRouter.post('/get-product-quantity', async (req,res)=>{
         }
 
     } catch (error) {
-        console.error(`<<< (/api/get-product-quantity) >>> ${error} >>>`);
+        console.error(`<<< [/api/get-product-quantity] >>> ${error} >>>`);
         return res.status(500).json({
             success: false,
             message: 'ERROR',
@@ -135,7 +136,7 @@ apiRouter.post('/get-cart-length', async (req,res)=>{
         const {userID} = req.body;
 
         if(!userID){
-            console.log('<<< (/api/get-cart-length) >>> Invalid userID >>>');
+            console.log('<<< [/api/get-cart-length] >>> Invalid userID >>>');
             return res.status(404).json({
                 success: false,
                 message: 'Invalid userID'
@@ -144,7 +145,7 @@ apiRouter.post('/get-cart-length', async (req,res)=>{
         const cart = await Cart.findOne({ userID });
 
         if (!cart) {
-            console.log('<<< (/api/get-cart-length) >>> Cart Not Found >>>');
+            console.log('<<< [/api/get-cart-length] >>> Cart Not Found >>>');
             return res.status(404).json({
                 success: false,
                 message: 'Cart Not Found'
@@ -158,7 +159,7 @@ apiRouter.post('/get-cart-length', async (req,res)=>{
         }
 
     } catch (error) {
-        console.error(`<<< (/api/get-cart-length) >>> ${error} >>>`);
+        console.error(`<<< [/api/get-cart-length] >>> ${error} >>>`);
         return res.status(500).json({
             success: false,
             message: 'ERROR',
@@ -172,7 +173,7 @@ apiRouter.post('/get-cart-total-price', async (req,res)=>{
         const {userID} = req.body;
 
         if(!userID){
-            console.log('<<< (/api/get-cart-total-price) >>> Invalid UserID >>>');
+            console.log('<<< [/api/get-cart-total-price] >>> Invalid UserID >>>');
             return res.status(404).json({
                 success: false,
                 message: 'Invalid userID'
@@ -181,7 +182,7 @@ apiRouter.post('/get-cart-total-price', async (req,res)=>{
         const cart = await Cart.findOne({ userID });
 
         if (!cart) {
-            console.log('<<< (/api/get-cart-total-price) >>> Cart Not Found >>>');
+            console.log('<<< [/api/get-cart-total-price] >>> Cart Not Found >>>');
             return res.status(404).json({
                 success: false,
                 message: 'Cart Not Found'
@@ -195,7 +196,7 @@ apiRouter.post('/get-cart-total-price', async (req,res)=>{
         }
 
     } catch (error) {
-        console.error(`<<< (/api/get-cart-total-price) >>> ${error} >>>`);
+        console.error(`<<< [/api/get-cart-total-price] >>> ${error} >>>`);
         return res.status(500).json({
             success: false,
             message: 'ERROR',
@@ -209,7 +210,7 @@ apiRouter.post('/add-to-cart', async (req,res)=>{
         const {userID,productID} = req.body;
 
         if(!userID || !productID){
-            console.log('<<< (/api/add-to-product) >>> Invalid userID or productID >>>');
+            console.log('<<< [/api/add-to-product] >>> Invalid userID or productID >>>');
             return res.status(404).json({
                 success: false,
                 message: 'Invalid userID or productID'
@@ -244,7 +245,7 @@ apiRouter.post('/add-to-cart', async (req,res)=>{
         });
 
     } catch (error) {
-        console.error(`<<< (/api/add-to-cart) >>> ${error} >>>`);
+        console.error(`<<< [/api/add-to-cart] >>> ${error} >>>`);
         return res.status(500).json({
             success: false,
             message: 'ERROR',
@@ -258,7 +259,7 @@ apiRouter.post('/decrease-quantity', async (req,res)=>{
         const {userID,productID} = req.body;
 
         if(!userID || !productID){
-            console.log('<<< (/api/decrease-quantity) >>> Invalid userID or productID >>>');
+            console.log('<<< [/api/decrease-quantity] >>> Invalid userID or productID >>>');
             return res.status(404).json({
                 success: false,
                 message: 'Invalid userID or productID'
@@ -301,7 +302,7 @@ apiRouter.post('/decrease-quantity', async (req,res)=>{
         });
 
     } catch (error) {
-        console.error(`<<< (/api/decrease-quantity) >>> ${error} >>>`);
+        console.error(`<<< [/api/decrease-quantity] >>> ${error} >>>`);
         return res.status(500).json({
             success: false,
             message: 'ERROR',
@@ -316,7 +317,7 @@ apiRouter.post('/del-from-cart', async (req,res)=>{
         const {userID,productID} = req.body;
 
         if(!userID || !productID){
-            console.log('<<< (/api/del-from-cart) >>> Invalid userID or productID >>>');
+            console.log('<<< [/api/del-from-cart] >>> Invalid userID or productID >>>');
             return res.status(404).json({
                 success: false,
                 message: 'Invalid userID or productID'
@@ -348,7 +349,7 @@ apiRouter.post('/del-from-cart', async (req,res)=>{
         });
 
     } catch (error) {
-        console.error(`<<< (/api/del-from-cart) >>> ${error} >>>`);
+        console.error(`<<< [/api/del-from-cart] >>> ${error} >>>`);
         return res.status(500).json({
             success: false,
             message: 'ERROR',
@@ -363,7 +364,7 @@ apiRouter.post('/get-cart', async (req,res)=>{
         const {userID} = req.body;
 
         if (!userID) {
-            console.log('<<< (/api/get-cart) >>> Invalid userID >>>');
+            console.log('<<< [/api/get-cart] >>> Invalid userID >>>');
             return res.status(404).json({
                 success: false,
                 messgage: 'Invalid userID'
@@ -374,7 +375,7 @@ apiRouter.post('/get-cart', async (req,res)=>{
         const cart = await Cart.findOne({userID});
 
         if(!cart){
-            console.log('<<< (/api/get-cart) >>> Cart Not Found >>>');
+            console.log('<<< [/api/get-cart] >>> Cart Not Found >>>');
             return res.status(404).json({
                 success: false,
                 message: 'Cart Not Found'
@@ -388,7 +389,7 @@ apiRouter.post('/get-cart', async (req,res)=>{
         }
 
     } catch (error) {
-        console.error(`<<< (/api/get-cart) >>> ${error} >>>`);
+        console.error(`<<< [/api/get-cart] >>> ${error} >>>`);
         return res.status(500).json({
             success: false,
             message: 'ERROR',
@@ -403,7 +404,7 @@ apiRouter.post('/place-order', async (req,res)=>{
         const {userID,address,phone} = req.body;
 
         if(!userID || !address || !phone){
-            console.log('<<< (/api/place-order) >>> Invalid Credentials >>>');
+            console.log('<<< [/api/place-order] >>> Invalid Credentials >>>');
             return res.status(404).json({
                 success: false,
                 message: 'Invalid Credentials'
@@ -415,7 +416,7 @@ apiRouter.post('/place-order', async (req,res)=>{
 
         const cart = await Cart.findOne({userID});
         if(!cart){
-            console.log('<<< (/api/place-order) >>> Cart Not Found >>>');
+            console.log('<<< [/api/place-order] >>> Cart Not Found >>>');
             return res.status(404).json({
                 success: false,
                 message: 'Cart Not Found'
@@ -439,7 +440,7 @@ apiRouter.post('/place-order', async (req,res)=>{
         });
 
     } catch (error) {
-        console.error(`<<< (/api/place-order) >>> ${error} >>>`);
+        console.error(`<<< [/api/place-order] >>> ${error} >>>`);
         return res.status(500).json({
             success: false,
             message: 'ERROR',
@@ -453,7 +454,7 @@ apiRouter.post('/get-user-orders', async (req,res)=>{
         const {userID} = req.body;
 
         if(!userID){
-            console.log('<<< (/api/get-user-orders) >>> Invalid Credentials >>>');
+            console.log('<<< [/api/get-user-orders] >>> Invalid Credentials >>>');
             return res.status(404).json({
                 success: false,
                 message: 'Invalid Credentials'
@@ -463,7 +464,7 @@ apiRouter.post('/get-user-orders', async (req,res)=>{
         const orders = await Order.find({userID});
         
         if(!orders){
-            console.log('<<< (/api/get-user-orders) >>> Orders Not Found >>>');
+            console.log('<<< [/api/get-user-orders] >>> Orders Not Found >>>');
             return res.status(404).json({
                 success: false,
                 message: 'Orders Not Found'
@@ -476,7 +477,84 @@ apiRouter.post('/get-user-orders', async (req,res)=>{
         });
 
     } catch (error) {
-        console.error(`<<< (/api/get-user-orders) >>> ${error} >>>`);
+        console.error(`<<< [/api/get-user-orders] >>> ${error} >>>`);
+        return res.status(500).json({
+            success: false,
+            message: 'ERROR',
+            error
+        });
+    }
+});
+
+apiRouter.post('/get-user-name', async (req,res)=>{
+    try {
+        const {userID} = req.body;
+
+        if(!userID){
+            console.log('<<< [/api/get-user-name] >>> Invalid Credentials >>>');
+            return res.status(404).json({
+                success: false,
+                message: 'Invalid Credentials'
+            });
+        }
+
+        const user = await User.findById(userID);
+        
+        if(!user){
+            console.log('<<< [/api/get-user-name] >>> User Not Found >>>');
+            return res.status(404).json({
+                success: false,
+                message: 'User Not Found'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            name: user.name
+        });
+
+    } catch (error) {
+        console.error(`<<< [/api/get-user-name] >>> ${error} >>>`);
+        return res.status(500).json({
+            success: false,
+            message: 'ERROR',
+            error
+        });
+    }
+});
+
+apiRouter.post('/get-user-contact', async (req,res)=>{
+    try {
+        const {userID} = req.body;
+
+        if(!userID){
+            console.log('<<< [/api/get-user-contact] >>> Invalid Credentials >>>');
+            return res.status(404).json({
+                success: false,
+                message: 'Invalid Credentials'
+            });
+        }
+
+        const user = await User.findById(userID);
+        
+        if(!user){
+            console.log('<<< [/api/get-user-contact] >>> User Not Found >>>');
+            return res.status(404).json({
+                success: false,
+                message: 'User Not Found'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            contact: {
+                address: user.address,
+                phone: user.phone
+            }
+        });
+
+    } catch (error) {
+        console.error(`<<< [/api/get-user-contact] >>> ${error} >>>`);
         return res.status(500).json({
             success: false,
             message: 'ERROR',

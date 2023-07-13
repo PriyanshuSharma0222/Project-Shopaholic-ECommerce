@@ -1,3 +1,5 @@
+isLoggedIn();
+
 const totalPrice = document.getElementsByClassName('total-price')[0];
 const placeOrderButton = document.getElementsByClassName('place-order-btn')[0];
 const orderForm = document.getElementById('orderForm');
@@ -68,6 +70,18 @@ const populateCart = async ()=>{
 }
 populateCart();
 
+const fillDetails = ()=>{
+    getUserContact({userID:localStorage.userID})
+    .then(contact => {
+        document.getElementById('address').value = contact.address;
+        document.getElementById('phone').value = contact.phone;
+    })
+    .catch(error => {
+        console.error(` fillDetails() : ${error}`);
+    });
+}
+fillDetails();
+
 orderForm.addEventListener('submit', async (e)=>{
     e.preventDefault();
 
@@ -87,7 +101,7 @@ orderForm.addEventListener('submit', async (e)=>{
             window.location.href = '/user/home';
         }
         else{
-            console.log(`(PlaceOrder.js) : ${data}`);
+            console.log(`(PlaceOrder.js) : ${JSON.stringify(data)}`);
             if(data.message === 'ERROR'){
                 console.error(`(PlaceOrder.js) : ${data.error}`);
             }

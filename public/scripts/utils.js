@@ -10,7 +10,7 @@ const getCartLength = async () => {
     .then(data => {
         if(data.success) return data.length;
         else{
-            console.log(`getCartLength() : ${data}`);
+            console.log(`getCartLength() : ${JSON.stringify(data)}`);
             if(data.message === 'ERROR'){
                 console.error(`getCartLength() : ${data.error}`);
             }
@@ -32,7 +32,7 @@ const getTotalPrice = async () => {
     .then(data => {
         if(data.success) return data.totalPrice;
         else{
-            console.log(`getTotalPrice() : ${data}`);
+            console.log(`getTotalPrice() : ${JSON.stringify(data)}`);
             if(data.message === 'ERROR'){
                 console.error(`getTotalPrice() : ${data.error}`);
             }
@@ -54,7 +54,7 @@ const getProductQuantity = async (productID) => {
     .then(data => {
         if(data.success) return data.quantity;
         else{
-            console.log(`getProductQuantity() : ${data}`);
+            console.log(`getProductQuantity() : ${JSON.stringify(data)}`);
             if(data.message === 'ERROR'){
                 console.error(`getProductQuantity() : ${data.error}`);
             }
@@ -72,7 +72,7 @@ const getAllProducts = async ()=>{
     .then(data => {
         if(data.success) return data.products;
         else{
-            console.log(`getAllProducts() : ${data}`);
+            console.log(`getAllProducts() : ${JSON.stringify(data)}`);
             if(data.message === 'ERROR'){
                 console.error(`getAllProducts() : ${data.error}`);
             }
@@ -94,7 +94,7 @@ const getCart = async ()=>{
     .then(data => {
         if(data.success) return data.cart;
         else{
-            console.log(`getCart() : ${data}`);
+            console.log(`getCart() : ${JSON.stringify(data)}`);
             if(data.message === 'ERROR'){
                 console.error(`getCart() : ${data.error}`);
             }
@@ -116,7 +116,7 @@ const getProduct = async (productID)=>{
     .then(data => {
         if(data.success) return data.product;
         else{
-            console.log(`getProduct() : ${data}`);
+            console.log(`getProduct() : ${JSON.stringify(data)}`);
             if(data.message === 'ERROR'){
                 console.error(`getProduct() : ${data.error}`);
             }
@@ -138,7 +138,7 @@ const getProductPrice = async (productID)=>{
     .then(data => {
         if(data.success) return data.price;
         else{
-            console.log(`getProductPrice() : ${data}`);
+            console.log(`getProductPrice() : ${JSON.stringify(data)}`);
             if(data.message === 'ERROR'){
                 console.error(`getProductPrice() : ${data.error}`);
             }
@@ -159,7 +159,7 @@ const addToCart = async (body)=>{
     .then(response => response.json())
     .then(data => {
         if(!data.success){
-            console.log(`addToCart(${body}) : ${data}`);
+            console.log(`addToCart(${body}) : ${JSON.stringify(data)}`);
             if(data.message === 'ERROR'){
                 console.error(`addToCart() : ${data.error}`);
             }
@@ -179,7 +179,7 @@ const delFromCart = async (body) => {
     .then(response => response.json())
     .then(data => {
         if(!data.success){
-            console.log(`delFromCart(${body}) : ${data}`);
+            console.log(`delFromCart(${body}) : ${JSON.stringify(data)}`);
             if(data.message === 'ERROR'){
                 console.error(`delFromCart() : ${data.error}`);
             }
@@ -199,7 +199,7 @@ const decreaseQuantity = async (body) => {
     .then(response => response.json())
     .then(data => {
         if(!data.success){
-            console.log(`decreaseQuantity(${body}) : ${data}`);
+            console.log(`decreaseQuantity(${body}) : ${JSON.stringify(data)}`);
             if(data.message === 'ERROR'){
                 console.error(`decreaseQuantity() : ${data.error}`);
             }
@@ -220,7 +220,7 @@ const getUserOrders = async () => {
     .then(data => {
         if(data.success) return data.orders;
         else{
-            console.log(`getUserOrders() : ${data}`);
+            console.log(`getUserOrders() : ${JSON.stringify(data)}`);
             if(data.message === 'ERROR'){
                 console.error(`getUserOrders() : ${data.error}`);
             }
@@ -230,4 +230,122 @@ const getUserOrders = async () => {
     .catch(error => {
         console.error(`getUserOrders() : ${error}`);
     });
+}
+
+const getAllOrders = async () => {
+    return fetch('/admin/get-all-orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({adminID:localStorage.getItem('userID')})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success) return data.orders;
+        else{
+            console.log(`getAllOrders() : ${JSON.stringify(data)}`);
+            if(data.message === 'ERROR'){
+                console.error(`getAllOrders() : ${data.error}`);
+            }
+            return [];
+        }
+    })
+    .catch(error => {
+        console.error(`getAllOrders() : ${error}`);
+    });
+}
+
+const changeOrderStatus = async (body) => {
+    return fetch('/admin/change-order-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(!data.success){
+            console.log(`changeOrderStatus(${body}) : ${JSON.stringify(data)}`);
+            if(data.message === 'ERROR'){
+                console.error(`changeOrderStatus() : ${data.error}`);
+            }
+        }
+    })
+    .catch(error => {
+        console.error(`changeOrderStatus(${body}) : ${error}`);
+    });
+}
+
+const getUserName = async (body) => {
+    return fetch('/api/get-user-name', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success){
+            return data.name;
+        }
+        else{
+            console.log(`getUserName(${body}) : ${JSON.stringify(data)}`);
+            if(data.message === 'ERROR'){
+                console.error(`getUserName() : ${data.error}`);
+            }
+            return "";
+        }
+    })
+    .catch(error => {
+        console.error(`getUserName(${body}) : ${error}`);
+    });
+}
+
+const getUserContact = async (body) => {
+    return fetch('/api/get-user-contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success){
+            return data.contact;
+        }
+        else{
+            console.log(`getUserContact(${body}) : ${JSON.stringify(data)}`);
+            if(data.message === 'ERROR'){
+                console.error(`getUserContact() : ${data.error}`);
+            }
+            return {address: "", phone: ""};
+        }
+    })
+    .catch(error => {
+        console.error(`getUserContact(${body}) : ${error}`);
+    });
+}
+
+const adminAuthentication = async () => {
+    return fetch('/admin/authentication', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({adminID:localStorage.getItem('userID')})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(!data.success){
+            console.log(`adminAuthentication() : AUTHENTICATION FAILED`);
+            window.location.href = '/user/login';
+            return false;
+        }
+        else{
+            return true;
+        }
+    })
+    .catch(error => {
+        console.error(`adminAuthentication() : ${error}`);
+    });
+}
+
+const isLoggedIn = ()=>{
+    if(localStorage.getItem('isLoggedIn') === false || localStorage.getItem('userID') === ''){
+        window.location.href = '/';
+    }
 }

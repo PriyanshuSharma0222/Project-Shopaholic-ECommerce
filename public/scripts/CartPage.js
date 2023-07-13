@@ -1,3 +1,5 @@
+isLoggedIn();
+
 const cartContainer = document.getElementById('cart-container');
 const totalPrice = document.getElementsByClassName('total-price')[0];
 const buyNowButton = document.getElementsByClassName('buy-now-btn')[0];

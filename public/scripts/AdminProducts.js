@@ -1,17 +1,7 @@
-isLoggedIn();
+adminAuthentication();
 
 const productContainer = document.getElementById('product-container');
-
-const updateCartLength = ()=>{
-    getCartLength()
-    .then(length => {
-        cartLength.innerText = length;
-    })
-    .catch(error => {
-        console.error(`updateCartLength() : ${error}`);
-    });
-}
-updateCartLength();
+const addProductButton = document.getElementsByClassName('add-product-btn')[0];
 
 const populateProducts = ()=>{
     productContainer.innerHTML = "";
@@ -27,19 +17,16 @@ const populateProducts = ()=>{
             <p class="product-description">${e.description}</p>
             <div class="card-bottom">
                 <span class="product-price">&#8377; ${e.price}</span>
-                <button type="button" class="add-to-cart-btn" id="${e._id}">Add to Cart</button>
+                <button type="button" class="edit-product-btn" id="${e._id}">Edit</button>
             </div>
             `
             productContainer.appendChild(newProduct);
         });
         await Promise.all(promises);
-        
-        Array.from(document.getElementsByClassName('add-to-cart-btn')).forEach(e=>{
+
+        Array.from(document.getElementsByClassName('edit-product-btn')).forEach(e=>{
             e.addEventListener('click', function() {
-                addToCart({userID:localStorage.getItem('userID'), productID:e.id})
-                .then(()=>{
-                    updateCartLength();
-                })
+                window.location.href = `edit-product?productID=${e.id}`;
             });
         });
     })
@@ -48,3 +35,7 @@ const populateProducts = ()=>{
     });
 }
 populateProducts();
+
+addProductButton.addEventListener('click', ()=>{
+    window.location.href = 'add-product';
+});
